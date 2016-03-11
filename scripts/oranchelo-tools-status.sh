@@ -13,7 +13,8 @@ source $( cd "$( dirname "$0" )" && pwd )/oranchelo-tools-utils.sh
 
 
 # CONFIG
-
+RELEASES=$(curl -i https://api.github.com/repos/Madh93/oranchelo-icon-theme/tags)
 
 
 # SOURCE CODE
+echo "${RELEASES}"
