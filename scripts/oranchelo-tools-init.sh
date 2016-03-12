@@ -14,9 +14,6 @@ source $( cd "$( dirname "$0" )" && pwd )/oranchelo-tools-utils.sh
 
 # CONFIG
 SCRIPT=$(basename $0 .sh)
-NAME_DIR="oranchelo-workspace"
-DIR="$HOME/$NAME_DIR"
-
 
 # SOURCE CODE
 
