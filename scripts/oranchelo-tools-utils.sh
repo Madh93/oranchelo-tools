@@ -9,6 +9,8 @@
 
 
 # UTILS
+NAME_DIR="oranchelo-workspace"
+DIR="$HOME/$NAME_DIR"
 
 # Output color: BLUE
 show_info() {
@@ -28,4 +30,12 @@ show_error() {
 end() {
   echo -e "\nExiting...\n"
   exit 0
+}
+
+workspace_exists() {
+  if [[ -d "$DIR" ]] && [[ -n "$DIR" ]] ; then
+    return 0
+  else
+    return 1
+  fi
 }

@@ -13,7 +13,7 @@ source $( cd "$( dirname "$0" )" && pwd )/oranchelo-tools-utils.sh
 
 
 # CONFIG
-SCRIPT="oranchelo-tools-init"
+SCRIPT=$(basename $0 .sh)
 NAME_DIR="oranchelo-workspace"
 DIR="$HOME/$NAME_DIR"
 
@@ -32,8 +32,8 @@ mk_file() {
 
 create_tree() {
 
-  if [ -d "$DIR" ]; then
-    show_error "$DIR already exists!"
+  if workspace_exists ; then
+    show_error "Oranchelo Workspace already exists!"
     end
   fi
   
@@ -87,6 +87,6 @@ case "$1" in
     create_tree
     ;;
   *)
-    echo -e "$SCRIPT: unknown argument.\nRun '$SCRIPT -h' for usage."
+    echo -e "$SCRIPT: unknown argument.\nRun $(show_info '$SCRIPT -h') for usage."
     ;;
 esac
