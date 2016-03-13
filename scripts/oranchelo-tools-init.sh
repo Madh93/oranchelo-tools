@@ -63,7 +63,7 @@ create_tree() {
 
 show_help() {
 
-  echo -e "\n$SCRIPT: initalize build directory for oranchelo-icon-theme.\n"
+  echo -e "\n$SCRIPT: initalize build directory for $ORANCHELO.\n"
   echo -e "Usage: $SCRIPT [options]\n"
   echo -e "Options:"
   echo "  -f, --force   Remove the previous workspace"

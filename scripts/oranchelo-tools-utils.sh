@@ -9,6 +9,7 @@
 
 
 # UTILS
+ORANCHELO="oranchelo-icon-theme"
 NAME_DIR="oranchelo-workspace"
 DIR="$HOME/$NAME_DIR"
 
