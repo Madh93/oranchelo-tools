@@ -4,8 +4,8 @@
 # DESCRIPTION   : Check available release of oranchelo-icon-theme
 # AUTHOR        : Madh93 (Miguel Hernandez)
 # VERSION       : 0.1.0
-# LICENSE       : GNU General Public License v3   
-# USAGE         : bash oranchelo-tools-status.sh 
+# LICENSE       : GNU General Public License v3
+# USAGE         : bash oranchelo-tools-status.sh
 
 
 # INCLUDE
@@ -24,7 +24,7 @@ menu_update=1
 # SOURCE CODE
 
 check_new_version() {
-  
+
   if ! workspace_exists ; then
     show_error "Oranchelo Workspace does not exist!"
     echo -e "\nRun $(show_info 'oranchelo-tools-init') for create it."
@@ -56,10 +56,10 @@ show_status() {
   # Update local
   if [ $menu_update -eq 0 ] ; then
     update
-  else
+  elif [ ! -f "$DIR/sources/$release_version.tar.gz" ] ; then
     echo -e "\nRun $(show_info 'oranchelo-tools-update').\n"
   fi
-    
+
 }
 
 show_all() {
@@ -67,9 +67,9 @@ show_all() {
   echo -e "\nStatus for each build...\n"
   pkgs_pushed="$(curl -i $PKGS_PUSHED_URL 2>&1)"
 
-  printf "\t+------------------------------------+ \n" 
+  printf "\t+------------------------------------+ \n"
   printf "\t| %-6s | %-6s | %-4s | %-4s |\n" "Package" "Version" "Built" "Pushed"
-  printf "\t|---------|---------|-------|--------| \n" 
+  printf "\t|---------|---------|-------|--------| \n"
 
   build_begin=$(grep -nH 'BEGINBUILD' $DIR/config | cut -d ':' -f2)
   build_end=$(grep -nH 'ENDBUILD' $DIR/config | cut -d ':' -f2)
@@ -104,7 +104,7 @@ show_all() {
 
   # RPM
   rpm=$(echo "${builds}" | grep rpm | tr -s ' |\t' ':')
-  
+
   for pkg in $rpm; do
     rpm_name="$ORANCHELO-$release_version-1.fc23.noarch.rpm"
     rpm_path="$DIR/rpm/$ORANCHELO_$release_version/rpm/$rpm_name"
@@ -126,7 +126,7 @@ show_all() {
     printf "\t| %-7s | %-7s | %-5s   | %-6s    |\n" "RPM" "-" $built $pushed
   done
 
-  printf "\t+------------------------------------+ \n" 
+  printf "\t+------------------------------------+ \n"
 }
 
 update() {
@@ -147,13 +147,13 @@ show_help() {
 
 # MAIN
 while [ "$1" != "" ]; do
-  case "$1" in 
+  case "$1" in
     -a | --all)
       menu_all=0
-      ;;    
+      ;;
     -u | --update)
       menu_update=0
-      ;;  
+      ;;
     -h | --help)
       show_help
       exit 0
