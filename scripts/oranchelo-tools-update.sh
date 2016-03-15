@@ -14,7 +14,7 @@ source $( cd "$( dirname "$0" )" && pwd )/oranchelo-tools-utils.sh
 
 # CONFIG
 SCRIPT=$(basename $0 .sh)
-PKGS_PUSHED_URL="https://raw.githubusercontent.com/Madh93/oranchelo-icon-theme/master/README.md"
+menu_force=1
 
 
 # SOURCE CODE
@@ -32,7 +32,8 @@ update() {
   release_version=$(echo "${releases}" | grep name | head -1 | cut -d '"' -f4 | cut -c 2-)
   release_targz=$(echo "${releases}" | grep tarball | head -1 | cut -d '"' -f4)
 
-  if [ -f "$DIR/sources/$release_version.tar.gz" ] ; then
+  # Update if doesn't exist or --force-update
+  if [[ -f "$DIR/sources/$release_version.tar.gz" ]] && [[ $menu_force -eq 1 ]]; then
     echo "Nothing to do: last release downloaded."
   else
     wget $release_targz -O $DIR/sources/$release_version.tar.gz
@@ -45,19 +46,27 @@ show_help() {
   echo -e "\n$SCRIPT: update local releases of $ORANCHELO.\n"
   echo -e "Usage: $SCRIPT [options]\n"
   echo -e "Options:"
+  echo "  -f, --force   Overwrite existing local releases"
   echo "  -h, --help    Print help"
 }
 
 
 # MAIN
-case "$1" in
-  -h | --help)
-    show_help
-    ;;
-  "")
-    update
-    ;;
-  *)
-    echo -e "$SCRIPT: unknown argument.\nRun $(show_info '$SCRIPT -h') for usage."
-    ;;
-esac
+while [ "$1" != "" ]; do
+  case "$1" in
+    -f | --force)
+      menu_force=0
+      ;;
+    -h | --help)
+      show_help
+      exit 0
+      ;;
+    *)
+      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info '$SCRIPT -h') for usage."
+      exit 0
+      ;;
+  esac
+  shift
+done
+
+update
