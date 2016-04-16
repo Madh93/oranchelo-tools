@@ -8,6 +8,15 @@
 #define ORANCHELO_TOOLS_H
 
 /**
+*** INCLUDES
+**/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+/**
 *** CONSTANTS 
 **/
 
@@ -43,9 +52,9 @@ typedef enum {
 
 /* Command: Struct with command info */
 typedef struct {
-    char* name;
+    char *name;
     command cmd;
-    char* arguments;
+    char *args;
 } Command;
 
 
@@ -58,8 +67,9 @@ void readCommand(int size, char *args[]);
 int runCommand();
 
 /* Built-in data structures */
-int initCommand(Command *c, char *args[]);
+int initCommand(Command *c, int size, char *args[]);
 int setCommand(const char *name, command *cmd);
+int setArguments(int size, char *args[], char **arguments);
 
 /* Built-in commands */
 void showHelp();
