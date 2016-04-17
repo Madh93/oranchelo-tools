@@ -13,6 +13,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
 #include <string.h>
 
 
@@ -23,6 +26,7 @@
 /* General */
 #define APP "oranchelo-tools"
 #define VERSION "0.0.1"
+#define PATH "/usr/local/lib/oranchelo-tools/scripts"
 
 /* Commands names */
 #define CMD_BUILD "build"
@@ -47,14 +51,15 @@ typedef enum {
 typedef enum {
     NO_ARGUMENTS,
     INVALID_ARGUMENT,
-    INITIALIZED_FAIL
+    INITIALIZED_FAIL,
+    RUN_COMMAND_FAIL
 } error;
 
 /* Command: Struct with command info */
 typedef struct {
-    char *name;
     command cmd;
-    char *args;
+    char **args;
+    char *path;
 } Command;
 
 
@@ -64,12 +69,13 @@ typedef struct {
 
 /* General */
 void readCommand(int size, char *args[]);
-int runCommand();
+int runCommand(const Command *c);
 
 /* Built-in data structures */
 int initCommand(Command *c, int size, char *args[]);
 int setCommand(const char *name, command *cmd);
-int setArguments(int size, char *args[], char **arguments);
+int setArguments(const int size, char *args[], char **arguments[]);
+int setPath(char *name, char *path[]);
 
 /* Built-in commands */
 void showHelp();

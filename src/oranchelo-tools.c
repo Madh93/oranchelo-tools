@@ -16,9 +16,27 @@ void readCommand(int size, char *args[]) {
     
     if (initCommand(&c, size, args) != 0)
         throwError(INITIALIZED_FAIL);
+
+    runCommand(&c);
 }
 
-int runCommand() {
+int runCommand(const Command *c) {
+
+    int pid, status;
+
+    pid = fork();
+
+    if (pid == 0) {
+        if (execvp(c->path, c->args) != 0) {
+            throwError(RUN_COMMAND_FAIL);
+        }
+
+    } else if (pid > 0) {
+        wait(&status);
+    } else {
+        return 1;
+    }
+
     return 0;
 }
 
@@ -28,14 +46,14 @@ int runCommand() {
 **/
 
 int initCommand(Command *c, int size, char *args[]) {
+
     // CMD
     if (setCommand(args[1], &c->cmd) != 0)
         throwErrorDetailed(INVALID_ARGUMENT, args[1]);
+    // Path
+    setPath(args[1], &c->path);
     // ARGS
-    if (setArguments(size, args, &c->args) != 0)
-        return 1;
-    // Name
-    c->name = args[1];
+    setArguments(size, args, &c->args);
 
     return 0;
 }
@@ -56,15 +74,29 @@ int setCommand(const char *name, command *cmd) {
     return 0;
 }
 
-int setArguments(int size, char *args[], char **arguments) {
+int setArguments(const int size, char *args[], char **arguments[]) {
 
-    char buffer[80] = "";
+    char **aux = malloc(size * sizeof(void*));
+    aux[size-1] = NULL;
 
-    for (int i=2; i<size; i++)
-        strcat(strcat(buffer, " "), args[i]);
+    for (int i=0; i<(size-1); i++) {
+        aux[i] = malloc(sizeof(args[i+1]));
+        memcpy(aux[i], args[i+1], sizeof(args[i+1]));
+    }
 
-    *arguments = malloc(strlen(buffer)); 
-    strcpy(*arguments, buffer);
+    *arguments = aux;
+
+    return 0;
+}
+
+int setPath(char *name, char *path[]) {
+
+    char path_[80] = PATH;
+    char *aux;
+
+    aux = strcat(strcat(strcat(path_, "/oranchelo-tools-"), name), ".sh");
+    *path = (char *)malloc(strlen(aux)+1);
+    strcpy(*path, aux);
 
     return 0;
 }
@@ -106,6 +138,7 @@ void throwErrorDetailed(error e, const char* info) {
         case NO_ARGUMENTS: printf("Not specified command. Try '%s --help'.\n", APP); break;
         case INVALID_ARGUMENT: printf("%s: unknown argument. Try '%s --help'.\n", info, APP); break;
         case INITIALIZED_FAIL: printf("Failed initializing 'Command'.\n"); break;
+        case RUN_COMMAND_FAIL: printf("Failed running 'Command'.\n"); break;
         default: printf("Unknown error...\n");
     }
     
