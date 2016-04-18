@@ -12,15 +12,12 @@
 
 void readCommand(int size, char *args[]) {
     
-    Command c;
-    
-    if (initCommand(&c, size, args) != 0)
-        throwError(INITIALIZED_FAIL);
-
-    runCommand(&c);
+    Command *c = initCommand(size,args);
+    runCommand(c);
+    destroyCommand(c);
 }
 
-int runCommand(const Command *c) {
+void runCommand(const Command *c) {
 
     int pid, status;
 
@@ -30,14 +27,11 @@ int runCommand(const Command *c) {
         if (execvp(c->path, c->args) != 0) {
             throwError(RUN_COMMAND_FAIL);
         }
-
     } else if (pid > 0) {
         wait(&status);
     } else {
-        return 1;
+        throwError(FORK_PROCESS_FAIL);
     }
-
-    return 0;
 }
 
 
@@ -45,21 +39,37 @@ int runCommand(const Command *c) {
 *** Built-in data structures
 **/
 
-int initCommand(Command *c, int size, char *args[]) {
+Command* initCommand(int size, char *args[]) {
 
-    // CMD
-    if (setCommand(args[1], &c->cmd) != 0)
-        throwErrorDetailed(INVALID_ARGUMENT, args[1]);
-    // Path
-    setPath(args[1], &c->path);
-    // ARGS
-    setArguments(size, args, &c->args);
+    Command *c = malloc(sizeof(Command));
 
-    return 0;
+    if (c) {
+        c->sz_args = size;
+        setCommand(args[1], &c->cmd);
+        setArguments(size, args, &c->args);
+        setPath(args[1], &c->path);
+    } else {
+        throwError(INITIALIZED_FAIL);
+    }
+
+    return c;
 }
 
-int setCommand(const char *name, command *cmd) {
-    
+void destroyCommand(Command *c) {
+
+    if (c) {
+        for (int i=0; i<(c->sz_args); i++)
+            free(c->args[i]);
+        free(c->args);
+        free(c->path);
+        free(c);
+    } else {
+        throwError(DESTROY_FAIL);
+    }
+}
+
+void setCommand(const char *name, command *cmd) {
+
     if (strcmp(name, CMD_BUILD) == 0)
         *cmd = BUILD;
     else if (strcmp(name, CMD_INIT) == 0)
@@ -69,12 +79,10 @@ int setCommand(const char *name, command *cmd) {
     else if (strcmp(name, CMD_UPDATE) == 0)
         *cmd = UPDATE;
     else
-        return 1;
-
-    return 0;
+        throwErrorDetailed(INVALID_ARGUMENT, name);
 }
 
-int setArguments(const int size, char *args[], char **arguments[]) {
+void setArguments(const int size, char *args[], char **arguments[]) {
 
     char **aux = malloc(size * sizeof(void*));
     aux[size-1] = NULL;
@@ -85,11 +93,9 @@ int setArguments(const int size, char *args[], char **arguments[]) {
     }
 
     *arguments = aux;
-
-    return 0;
 }
 
-int setPath(char *name, char *path[]) {
+void setPath(char *name, char *path[]) {
 
     char path_[80] = PATH;
     char *aux;
@@ -97,8 +103,6 @@ int setPath(char *name, char *path[]) {
     aux = strcat(strcat(strcat(path_, "/oranchelo-tools-"), name), ".sh");
     *path = (char *)malloc(strlen(aux)+1);
     strcpy(*path, aux);
-
-    return 0;
 }
 
 
@@ -139,6 +143,8 @@ void throwErrorDetailed(error e, const char* info) {
         case INVALID_ARGUMENT: printf("%s: unknown argument. Try '%s --help'.\n", info, APP); break;
         case INITIALIZED_FAIL: printf("Failed initializing 'Command'.\n"); break;
         case RUN_COMMAND_FAIL: printf("Failed running 'Command'.\n"); break;
+        case FORK_PROCESS_FAIL: printf("Failed fork 'Command'.\n"); break;
+        case DESTROY_FAIL: printf("Failed destroying 'Command'.\n"); break;
         default: printf("Unknown error...\n");
     }
     
