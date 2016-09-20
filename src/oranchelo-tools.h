@@ -20,14 +20,13 @@
 
 
 /**
-*** CONSTANTS 
+*** CONSTANTS
 **/
 
 /* General */
 #define APP "oranchelo-tools"
 #define VERSION "0.0.1"
-// #define PATH "/usr/local/lib/oranchelo-tools/scripts"
-#define PATH "/home/migue/Workspace/repos/oranchelo-tools/scripts"
+#define PATH "/usr/local/lib/oranchelo-tools/scripts"
 
 /* Commands names */
 #define CMD_BUILD "build"
@@ -43,10 +42,10 @@
 /* command: Command Type */
 typedef enum {
     BUILD,
-    INIT, 
-    STATUS, 
-    UPDATE 
-} command; 
+    INIT,
+    STATUS,
+    UPDATE
+} command;
 
 /* error: Error Type */
 typedef enum {
