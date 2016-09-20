@@ -14,3 +14,7 @@
 
 # Debug files
 *.dSYM/
+
+# Build
+build/
+bin/

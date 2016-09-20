@@ -14,7 +14,7 @@ source $( cd "$( dirname "$0" )" && pwd )/oranchelo-tools-utils.sh
 
 # CONFIG
 SCRIPT=$(basename $0 .sh)
-PKGS_PUSHED_URL="https://raw.githubusercontent.com/Madh93/oranchelo-icon-theme/master/README.md"
+PKGS_PUSHED_URL="https://raw.githubusercontent.com/OrancheloTeam/oranchelo-icon-theme/master/README.md"
 releases=""
 release_version=""
 menu_all=1
@@ -33,7 +33,7 @@ check_new_version() {
 
   # Get last release
   echo -e "Checking available release..."
-  releases=$(curl -i https://api.github.com/repos/Madh93/oranchelo-icon-theme/tags 2>&1)
+  releases=$(curl -i https://api.github.com/repos/OrancheloTeam/oranchelo-icon-theme/tags 2>&1)
   release_version=$(echo "${releases}" | grep name | head -1 | cut -d '"' -f4 | cut -c 2-)
 
   show_status
@@ -81,7 +81,7 @@ show_all() {
 
   for pkg in $deb; do
     name=$(echo $pkg | cut -d ':' -f2)
-    deb_name="$ORANCHELO_$release_version~ubuntu$name.1_all.deb"
+    deb_name="$ORANCHELO_$release_version.ubuntu$name.1_all.deb"
     deb_path="$DIR/deb/$ORANCHELO_$release_version/$name/deb/$deb_name"
 
     # Built package?

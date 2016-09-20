@@ -28,7 +28,7 @@ update() {
   fi
 
   # Get last release
-  releases=$(curl -i https://api.github.com/repos/Madh93/oranchelo-icon-theme/tags 2>&1)
+  releases=$(curl -i https://api.github.com/repos/OrancheloTeam/oranchelo-icon-theme/tags 2>&1)
   release_version=$(echo "${releases}" | grep name | head -1 | cut -d '"' -f4 | cut -c 2-)
   release_targz=$(echo "${releases}" | grep tarball | head -1 | cut -d '"' -f4)
 
