@@ -30,6 +30,7 @@
 
 /* Commands names */
 #define CMD_BUILD "build"
+#define CMD_CLEAN "clean"
 #define CMD_INIT "init"
 #define CMD_STATUS "status"
 #define CMD_UPDATE "update"
@@ -42,6 +43,7 @@
 /* command: Command Type */
 typedef enum {
     BUILD,
+    CLEAN,
     INIT,
     STATUS,
     UPDATE

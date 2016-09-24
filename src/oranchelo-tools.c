@@ -7,11 +7,11 @@
 #include "oranchelo-tools.h"
 
 /**
-*** General 
+*** General
 **/
 
 void readCommand(int size, char *args[]) {
-    
+
     Command *c = initCommand(size,args);
     runCommand(c);
     destroyCommand(c);
@@ -72,6 +72,8 @@ void setCommand(const char *name, command *cmd) {
 
     if (strcmp(name, CMD_BUILD) == 0)
         *cmd = BUILD;
+    if (strcmp(name, CMD_CLEAN) == 0)
+        *cmd = CLEAN;
     else if (strcmp(name, CMD_INIT) == 0)
         *cmd = INIT;
     else if (strcmp(name, CMD_STATUS) == 0)
@@ -114,7 +116,8 @@ void showHelp() {
     printf("%s: Development and build tools for Oranchelo\n", APP);
     printf("\nUsage: %s [command | options]\n", APP);
     printf("\nCommand:\n");
-    printf("  build \tBuild ditribution packagee\n");
+    printf("  build \tBuild ditribution package\n");
+    printf("  clean \tClean build workspace\n");
     printf("  init  \tInitialize build workspace\n");
     printf("  status\tCheck available release\n");
     printf("  update\tUpdate local releases\n");
@@ -137,7 +140,7 @@ void throwError(error e) {
 }
 
 void throwErrorDetailed(error e, const char* info) {
-    
+
     switch(e) {
         case NO_ARGUMENTS: printf("Not specified command. Try '%s --help'.\n", APP); break;
         case INVALID_ARGUMENT: printf("%s: unknown argument. Try '%s --help'.\n", info, APP); break;
@@ -147,6 +150,6 @@ void throwErrorDetailed(error e, const char* info) {
         case DESTROY_FAIL: printf("Failed destroying 'Command'.\n"); break;
         default: printf("Unknown error...\n");
     }
-    
+
     exit(0);
 }
