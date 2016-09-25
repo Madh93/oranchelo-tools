@@ -14,6 +14,7 @@ source $( cd "$( dirname "$0" )" && pwd )/oranchelo-tools-utils.sh
 
 # CONFIG
 SCRIPT=$(basename $0 .sh)
+menu_all=1
 
 # SOURCE CODE
 
@@ -25,13 +26,17 @@ clean_build() {
     end
   fi
 
-  echo -e "\nInitializing...\n"
+  echo -e "\nCleaning...\n"
 
   rm -rf $DIR/build/deb/*
   rm -rf $DIR/build/rpm/*
-  rm -rf $DIR/sources/*
+  # Remove sources too
+  if [ $menu_all -eq 0 ] ; then
+    # rm -rf $DIR/sources/*
+    echo "eliminar sources tambien"
+  fi
 
-  echo -e "Oranchelo Workspace clean!\n"
+  show_success "Oranchelo Workspace clean!\n"
 }
 
 show_help() {
@@ -39,19 +44,27 @@ show_help() {
   echo -e "\n$SCRIPT: initalize build directory for $ORANCHELO.\n"
   echo -e "Usage: $SCRIPT [options]\n"
   echo -e "Options:"
+  echo "  -a, --all     Remove all stored sources"
   echo "  -h, --help    Print help"
+  exit 0
 }
 
 
 # MAIN
-case "$1" in
-  -h | --help)
-    show_help
-    ;;
-  "")
-    clean_build
-    ;;
-  *)
-    echo -e "$SCRIPT: unknown argument.\nRun $(show_info '$SCRIPT -h') for usage."
-    ;;
-esac
+while [ "$1" != "" ]; do
+  case "$1" in
+    -a | --all)
+      menu_all=0
+      ;;
+    -h | --help)
+      show_help
+      ;;
+    *)
+      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info '$SCRIPT -h') for usage."
+      exit 0
+      ;;
+  esac
+  shift
+done
+
+clean_build

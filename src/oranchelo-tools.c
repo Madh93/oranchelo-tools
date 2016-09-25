@@ -72,7 +72,7 @@ void setCommand(const char *name, command *cmd) {
 
     if (strcmp(name, CMD_BUILD) == 0)
         *cmd = BUILD;
-    if (strcmp(name, CMD_CLEAN) == 0)
+    else if (strcmp(name, CMD_CLEAN) == 0)
         *cmd = CLEAN;
     else if (strcmp(name, CMD_INIT) == 0)
         *cmd = INIT;

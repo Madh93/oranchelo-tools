@@ -82,7 +82,7 @@ show_all() {
   for pkg in $deb; do
     name=$(echo $pkg | cut -d ':' -f2)
     deb_name="$ORANCHELO_$release_version.ubuntu$name.1_all.deb"
-    deb_path="$DIR/deb/$ORANCHELO_$release_version/$name/deb/$deb_name"
+    deb_path="$DIR/build/deb/$release_version/$name/deb/$deb_name"
 
     # Built package?
     if [ -f "$deb_path" ] ; then
@@ -107,7 +107,7 @@ show_all() {
 
   for pkg in $rpm; do
     rpm_name="$ORANCHELO-$release_version-1.fc23.noarch.rpm"
-    rpm_path="$DIR/rpm/$ORANCHELO_$release_version/rpm/$rpm_name"
+    rpm_path="$DIR/build/rpm/$release_version/rpm/$rpm_name"
 
     # Built package?
     if [ -f "$rpm_path" ] ; then
@@ -142,6 +142,7 @@ show_help() {
   echo "  -a, --all     Show status for all builds"
   echo "  -u, --update  Check and update local releases"
   echo "  -h, --help    Print help"
+  exit 0
 }
 
 
@@ -156,7 +157,6 @@ while [ "$1" != "" ]; do
       ;;
     -h | --help)
       show_help
-      exit 0
       ;;
     *)
       echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info '$SCRIPT -h') for usage."
