@@ -36,6 +36,10 @@ update() {
   if [[ -f "$DIR/sources/$release_version.tar.gz" ]] && [[ $menu_force -eq 1 ]]; then
     echo "Nothing to do: last release downloaded."
   else
+    mkdir -p $DIR/sources/old
+    if [ -n "$(ls -A $DIR/sources | grep tar.gz)" ]; then
+      mv $DIR/sources/$release_version.tar.gz $DIR/sources/old/$release_version.tar.gz
+    fi
     wget $release_targz -O $DIR/sources/$release_version.tar.gz
     echo -e "Updated to a new Oranchelo Icon Theme version:\t $(show_info $release_version)"
   fi
@@ -48,6 +52,7 @@ show_help() {
   echo -e "Options:"
   echo "  -f, --force   Overwrite existing local releases"
   echo "  -h, --help    Print help"
+  exit 0
 }
 
 
@@ -59,7 +64,6 @@ while [ "$1" != "" ]; do
       ;;
     -h | --help)
       show_help
-      exit 0
       ;;
     *)
       echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info '$SCRIPT -h') for usage."

@@ -57,7 +57,7 @@ show_status() {
   if [ $menu_update -eq 0 ] ; then
     update
   elif [ ! -f "$DIR/sources/$release_version.tar.gz" ] ; then
-    echo -e "\nRun $(show_info 'oranchelo-tools-update').\n"
+    echo -e "\nRun $(show_info 'oranchelo-tools update').\n"
   fi
 
 }

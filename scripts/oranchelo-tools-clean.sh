@@ -32,8 +32,7 @@ clean_build() {
   rm -rf $DIR/build/rpm/*
   # Remove sources too
   if [ $menu_all -eq 0 ] ; then
-    # rm -rf $DIR/sources/*
-    echo "eliminar sources tambien"
+    rm -rf $DIR/sources/*
   fi
 
   show_success "Oranchelo Workspace clean!\n"

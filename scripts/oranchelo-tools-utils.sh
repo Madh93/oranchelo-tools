@@ -3,9 +3,9 @@
 # NAME          : oranchelo-tools-utils
 # DESCRIPTION   : Basic utils for oranchelo-tools
 # AUTHOR        : Madh93 (Miguel Hernandez)
-# VERSION       : 0.0.1 
-# LICENSE       : GNU General Public License v3   
-# USAGE         : 
+# VERSION       : 0.0.1
+# LICENSE       : GNU General Public License v3
+# USAGE         :
 
 
 # UTILS
@@ -31,6 +31,16 @@ show_error() {
 end() {
   echo -e "\nExiting...\n"
   exit 0
+}
+
+mk_dir() {
+  mkdir -p $1
+  show_success "\tcreate $(show_info ${1#$HOME/})"
+}
+
+mk_file() {
+  touch $1
+  show_success "\tcreate $(show_info ${1#$HOME/})"
 }
 
 workspace_exists() {
