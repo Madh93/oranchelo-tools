@@ -3,7 +3,8 @@ CC=gcc
 CP=cp -r
 MD=mkdir -p
 RM=rm -rf
-CHM=chmod +x
+CHM=chmod -R +x
+CHMALL=chmod -R 755
 
 # Directories
 DIR_BUILD=build
@@ -33,13 +34,15 @@ directories:
 
 install:
 	$(CP) $(DIR_BIN)/$(TARGET) $(PREFIX)/bin/$(TARGET)
-	$(MD) $(LIB)/scripts
+	$(MD) $(LIB)/scripts $(SHARE)
 	$(CP) scripts/* $(LIB)/scripts
+	$(CP) share/* $(SHARE)
 	$(CHM) $(LIB)/scripts
+	$(CHMALL) $(SHARE)
 
 uninstall:
 	$(RM) $(PREFIX)/bin/$(TARGET)
-	$(RM) $(LIB)
+	$(RM) $(LIB) $(SHARE)
 
 clean:
 	$(RM) $(DIR_BIN) $(DIR_BUILD)

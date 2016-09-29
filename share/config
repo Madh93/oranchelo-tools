@@ -1,0 +1,9 @@
+BEGINBUILD
+----------
+# TYPE    VERSION   CODENAME
+# deb     14.04     trusty
+
+# Add your builds here
+
+---------
+ENDBUILD

@@ -31,6 +31,7 @@
 /* Commands names */
 #define CMD_BUILD "build"
 #define CMD_CLEAN "clean"
+#define CMD_CONFIG "config"
 #define CMD_INIT "init"
 #define CMD_STATUS "status"
 #define CMD_UPDATE "update"
@@ -44,6 +45,7 @@
 typedef enum {
     BUILD,
     CLEAN,
+    CONFIG,
     INIT,
     STATUS,
     UPDATE

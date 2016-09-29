@@ -74,6 +74,8 @@ void setCommand(const char *name, command *cmd) {
         *cmd = BUILD;
     else if (strcmp(name, CMD_CLEAN) == 0)
         *cmd = CLEAN;
+    else if (strcmp(name, CMD_CONFIG) == 0)
+        *cmd = CONFIG;
     else if (strcmp(name, CMD_INIT) == 0)
         *cmd = INIT;
     else if (strcmp(name, CMD_STATUS) == 0)
@@ -118,6 +120,7 @@ void showHelp() {
     printf("\nCommand:\n");
     printf("  build \tBuild ditribution package\n");
     printf("  clean \tClean build workspace\n");
+    printf("  config \tShow configuration file\n");
     printf("  init  \tInitialize build workspace\n");
     printf("  status\tCheck available release\n");
     printf("  update\tUpdate local releases\n");
