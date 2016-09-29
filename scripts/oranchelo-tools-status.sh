@@ -17,7 +17,7 @@ SCRIPT=$(basename $0 .sh)
 PKGS_PUSHED_URL="https://raw.githubusercontent.com/OrancheloTeam/oranchelo-icon-theme/master/README.md"
 releases=""
 release_version=""
-menu_all=1
+menu_all=0
 menu_update=1
 
 
@@ -27,7 +27,7 @@ check_new_version() {
 
   if ! workspace_exists ; then
     show_error "Oranchelo Workspace does not exist!"
-    echo -e "\nRun $(show_info 'oranchelo-tools-init') for create it."
+    echo -e "\nRun $(show_info 'oranchelo-tools init') for create it."
     end
   fi
 
@@ -130,8 +130,7 @@ show_all() {
 }
 
 update() {
-  # echo -e "\nRun $(show_info 'oranchelo-tools-update').\n"
-  echo ""
+  oranchelo-tools update
 }
 
 show_help() {
@@ -139,7 +138,7 @@ show_help() {
   echo -e "\n$SCRIPT: check available release of $ORANCHELO.\n"
   echo -e "Usage: $SCRIPT [options]\n"
   echo -e "Options:"
-  echo "  -a, --all     Show status for all builds"
+  echo "  -a, --all     [DEFAULT] Show status for all builds"
   echo "  -u, --update  Check and update local releases"
   echo "  -h, --help    Print help"
   exit 0
@@ -149,7 +148,7 @@ show_help() {
 # MAIN
 while [ "$1" != "" ]; do
   case "$1" in
-    -a | --all)
+    -a | --all) # DEFAULT ENTRY
       menu_all=0
       ;;
     -u | --update)

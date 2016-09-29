@@ -22,7 +22,7 @@ clean_build() {
 
   if ! workspace_exists ; then
     show_error "Oranchelo Workspace does not exist!"
-    echo -e "\nRun $(show_info 'oranchelo-tools-init') for create it."
+    echo -e "\nRun $(show_info 'oranchelo-tools init') for create it."
     end
   fi
 
