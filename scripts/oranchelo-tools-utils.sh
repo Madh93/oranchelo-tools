@@ -34,12 +34,20 @@ end() {
 }
 
 mk_dir() {
-  mkdir -p $1
+  if [ -z $2 ]; then
+    mkdir -p $1
+  else
+    cp -r $2 $1
+  fi
   show_success "\tcreate $(show_info ${1#$HOME/})"
 }
 
 mk_file() {
-  touch $1
+  if [ -z $2 ]; then
+    touch $1
+  else
+    cp $2 $1
+  fi
   show_success "\tcreate $(show_info ${1#$HOME/})"
 }
 

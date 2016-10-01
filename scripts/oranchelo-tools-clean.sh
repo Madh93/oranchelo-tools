@@ -30,9 +30,10 @@ clean_build() {
 
   rm -rf $DIR/build/deb/*
   rm -rf $DIR/build/rpm/*
-  # Remove sources too
+  # Remove sources and config too
   if [ $menu_all -eq 0 ] ; then
     rm -rf $DIR/sources/*
+    rm -rf $DIR/config
   fi
 
   show_success "Oranchelo Workspace clean!\n"
@@ -43,7 +44,7 @@ show_help() {
   echo -e "\n$SCRIPT: initalize build directory for $ORANCHELO.\n"
   echo -e "Usage: $SCRIPT [options]\n"
   echo -e "Options:"
-  echo "  -a, --all     Remove all stored sources"
+  echo "  -a, --all     Remove all stored sources and config"
   echo "  -h, --help    Print help"
   exit 0
 }

@@ -27,7 +27,7 @@ create_tree() {
   echo -e "\nInitializing...\n"
 
   mk_dir "$DIR"
-  mk_file "$DIR/config"
+  mk_file "$DIR/config" "/usr/local/share/oranchelo-tools/config"
   mk_dir "$DIR/sources"
   mk_dir "$DIR/build/deb"
   mk_dir "$DIR/build/rpm"
