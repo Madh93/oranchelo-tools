@@ -1,0 +1,15 @@
+Source: oranchelo-icon-theme
+Section: gnome
+Priority: extra
+Maintainer: Miguel Hernandez <michelangelo93@gmail.com>
+Build-Depends: debhelper (>= 9.0.0)
+Standards-Version: 3.9.5
+Homepage: https://launchpad.net/~oranchelo/+archive/ubuntu/oranchelo-icon-theme
+
+Package: oranchelo-icon-theme
+Version: $RELEASE~ubuntu$VERSION.1
+Architecture: all
+Depends: ${misc:Depends}
+Description: Oranchelo icon theme
+ Oranchelo is a flat-design icon theme for XFCE4 based on Super Flat Remix
+ and inspired by "Corny icons" by Patryk Goworowski.
