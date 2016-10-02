@@ -58,7 +58,8 @@ Command* initCommand(int size, char *args[]) {
 void destroyCommand(Command *c) {
 
     if (c) {
-        for (int i=0; i<(c->sz_args); i++)
+        int i;
+        for (i=0; i<(c->sz_args); i++)
             free(c->args[i]);
         free(c->args);
         free(c->path);
@@ -90,8 +91,9 @@ void setArguments(const int size, char *args[], char **arguments[]) {
 
     char **aux = malloc(size * sizeof(void*));
     aux[size-1] = NULL;
+    int i;
 
-    for (int i=0; i<(size-1); i++) {
+    for (i=0; i<(size-1); i++) {
         aux[i] = malloc(sizeof(args[i+1]));
         memcpy(aux[i], args[i+1], sizeof(args[i+1]));
     }
