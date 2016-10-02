@@ -35,10 +35,10 @@ config() {
 
   # Edit config
   if [ $menu_edit -eq 0 ] ; then
-    if [ -n $EDITOR ] ; then
-      $EDITOR $DIR/config
-    else
+    if [ -z $EDITOR ] ; then
       nano $DIR/config
+    else
+      $EDITOR $DIR/config
     fi
     show_success "Config Edit done!"
   fi
