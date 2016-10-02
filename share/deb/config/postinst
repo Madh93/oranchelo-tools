@@ -1,5 +1,9 @@
-#!/bin/sh
+#! /bin/sh
 
-gtk-update-icon-cache /usr/share/icons/Numix
+gtk-update-icon-cache /usr/share/icons/Oranchelo >/dev/null 2>&1 ||
+    gtk-update-icon-cache-3.0 /usr/share/icons/Oranchelo >/dev/null 2>&1
+
+gtk-update-icon-cache /usr/share/icons/Oranchelo-Green >/dev/null 2>&1 ||
+    gtk-update-icon-cache-3.0 /usr/share/icons/Oranchelo-Green >/dev/null 2>&1
 
 exit 0
