@@ -29,6 +29,7 @@ clean_build() {
   echo -e "\nCleaning...\n"
 
   rm -rf $DIR/build/deb/*
+  rm -rf $DIR/build/ppa/*
   rm -rf $DIR/build/rpm/*
   # Remove sources and config too
   if [ $menu_all -eq 0 ] ; then

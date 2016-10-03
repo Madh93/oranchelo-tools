@@ -1,3 +1,4 @@
+#! /bin/ppa
 #! /bin/bash
 
 # NAME          : oranchelo-tools-init
@@ -30,6 +31,7 @@ create_tree() {
   mk_file "$DIR/config" "/usr/local/share/oranchelo-tools/config"
   mk_dir "$DIR/sources"
   mk_dir "$DIR/build/deb"
+  mk_dir "$DIR/build/ppa"
   mk_dir "$DIR/build/rpm"
 
   echo -e "\nInitialized Oranchelo Workspace in $DIR\n"

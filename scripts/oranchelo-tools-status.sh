@@ -16,7 +16,7 @@ source $( cd "$( dirname "$0" )" && pwd )/oranchelo-tools-utils.sh
 SCRIPT=$(basename $0 .sh)
 PKGS_PUSHED_URL="https://raw.githubusercontent.com/OrancheloTeam/oranchelo-icon-theme/master/README.md"
 releases=""
-release_version=""
+release=""
 menu_all=0
 menu_update=1
 
@@ -34,7 +34,7 @@ check_new_version() {
   # Get last release
   echo -e "Checking available release..."
   releases=$(curl -i https://api.github.com/repos/OrancheloTeam/oranchelo-icon-theme/tags 2>&1)
-  release_version=$(echo "${releases}" | grep name | head -1 | cut -d '"' -f4 | cut -c 2-)
+  release=$(echo "${releases}" | grep name | head -1 | cut -d '"' -f4 | cut -c 2-)
 
   show_status
 }
@@ -42,10 +42,10 @@ check_new_version() {
 show_status() {
 
   # Basic status
-  if [ -f "$DIR/sources/$release_version.tar.gz" ] ; then
+  if [ -f "$DIR/sources/$release.tar.gz" ] ; then
     echo "Nothing to do: last release downloaded."
   else
-    echo -e "Available a new Oranchelo Icon Theme version:\t $(show_info $release_version)"
+    echo -e "Available a new Oranchelo Icon Theme version:\t $(show_info $release)"
   fi
 
   # All status builds
@@ -56,7 +56,7 @@ show_status() {
   # Update local
   if [ $menu_update -eq 0 ] ; then
     update
-  elif [ ! -f "$DIR/sources/$release_version.tar.gz" ] ; then
+  elif [ ! -f "$DIR/sources/$release.tar.gz" ] ; then
     echo -e "\nRun $(show_info 'oranchelo-tools update').\n"
   fi
 
@@ -80,9 +80,9 @@ show_all() {
   deb=$(echo "${builds}" | grep deb | tr -s ' |\t' ':')
 
   for pkg in $deb; do
-    name=$(echo $pkg | cut -d ':' -f2)
-    deb_name="$release_version.ubuntu$name.1_all.deb"
-    deb_path="$DIR/build/deb/$release_version/$name/deb/oranchelo-icon-theme_$release_version~ubuntu$name.1_all.deb"
+    version=$(echo $pkg | cut -d ':' -f2)
+    deb_name="$release.ubuntu$version.1_all.deb"
+    deb_path="$DIR/build/deb/$release/$version/deb/oranchelo-icon-theme_$release~ubuntu$version.1_all.deb"
 
     # Built package?
     if [ -f "$deb_path" ] ; then
@@ -98,16 +98,42 @@ show_all() {
       pushed=$(show_error "no!")
     fi
 
-    printf "\t| %-7s | %-7s | %-5s   | %-6s    |\n" "DEB" $name $built $pushed
+    printf "\t| %-7s | %-7s | %-5s   | %-6s    |\n" "DEB" $version $built $pushed
   done
 
+  # PPA
+  deb=$(echo "${builds}" | grep ppa | tr -s ' |\t' ':')
+
+  for pkg in $deb; do
+    version=$(echo $pkg | cut -d ':' -f2)
+    ppa_sources="$DIR/build/ppa/$release/$version/$release.ubuntu$version.1_source.changes"
+    launchpad="https://launchpad.net/~oranchelo/+archive/ubuntu/oranchelo-icon-theme/+files"
+    ppa_url="$launchpad/oranchelo-icon-theme_$release~ubuntu$version.1.dsc"
+
+    # Built package?
+    if [ -f "$ppa_sources" ] ; then
+      built=$(show_success "yes")
+    else
+      built=$(show_error "no!")
+    fi
+
+    # Pushed package?
+    if curl --output /dev/null --silent --head --fail "$ppa_url"
+    then
+      pushed=$(show_success "yes")
+    else
+      pushed=$(show_error "no!")
+    fi
+
+    printf "\t| %-7s | %-7s | %-5s   | %-6s    |\n" "PPA" $version $built $pushed
+  done
 
   # RPM
   rpm=$(echo "${builds}" | grep rpm | tr -s ' |\t' ':')
 
   for pkg in $rpm; do
-    rpm_name="$ORANCHELO-$release_version-1.fc23.noarch.rpm"
-    rpm_path="$DIR/build/rpm/$release_version/rpm/$rpm_name"
+    rpm_name="$ORANCHELO-$release-1.fc23.noarch.rpm"
+    rpm_path="$DIR/build/rpm/$release/rpm/$rpm_name"
 
     # Built package?
     if [ -f "$rpm_path" ] ; then

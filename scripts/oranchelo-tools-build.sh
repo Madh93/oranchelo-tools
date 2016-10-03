@@ -104,7 +104,7 @@ build_deb() {
 
   # COPYRIGHT
   sed -i "6s/.YEAR/$(date +'%Y')/" $build_path/config/copyright
-
+  
   show_info "\nBuilding package..."
   # Create deb directory and copy sources
   debdir="$build_path/$ORANCHELO-$release~ubuntu$version.1"
@@ -185,7 +185,6 @@ while [ "$1" != "" ]; do
   case "$1" in
     -p | --ppa)
       menu_ppa=0
-      ;;
       ;;
     -d | --deb)
       menu_deb=0
