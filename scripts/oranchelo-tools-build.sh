@@ -75,8 +75,8 @@ build_deb() {
   mk_dir "$build_path/config/changelog" "/usr/local/share/oranchelo-tools/deb/config/changelog"
   mk_dir "$build_path/config/control" "/usr/local/share/oranchelo-tools/deb/config/control"
   mk_dir "$build_path/config/copyright" "/usr/local/share/oranchelo-tools/deb/config/copyright"
+  mk_dir "$build_path/config/install" "/usr/local/share/oranchelo-tools/deb/config/install"
   mk_dir "$build_path/config/postinst" "/usr/local/share/oranchelo-tools/deb/config/postinst"
-  mk_dir "$build_path/config/prerm" "/usr/local/share/oranchelo-tools/deb/config/prerm"
   mk_dir "$build_path/deb"
 
   show_info "\nExtracting and copying sources..."
@@ -100,10 +100,9 @@ build_deb() {
 
   show_info "\nBuilding package..."
   # Create deb directory and copy sources
-  prepwd=$(pwd)
   debdir="$build_path/$ORANCHELO-$release~ubuntu$version.1"
   mkdir $debdir
-  cp -r $build_path/bin $debdir
+  cp -r $build_path/bin/* $debdir
 
   # Create packaging skeleton (debian/*)
   cd $debdir
@@ -114,11 +113,12 @@ build_deb() {
   mv debian/rules.new debian/rules
 
   # Copy config files
-  mv $build_path/config/changelog debian/changelog
-  mv $build_path/config/control debian/control
-  mv $build_path/config/copyright debian/copyright
-  mv $build_path/config/install debian/install
-  mv $build_path/config/postinst debian/postinst
+  chmod -x $build_path/config/*
+  cp $build_path/config/changelog debian/changelog
+  cp $build_path/config/control debian/control
+  cp $build_path/config/copyright debian/copyright
+  cp $build_path/config/install debian/install
+  cp $build_path/config/postinst debian/postinst
 
   # Remove the example files
   rm debian/*.ex debian/*.EX debian/README.*
@@ -126,9 +126,14 @@ build_deb() {
   # Build package
   debuild
 
-  cd $prepwd
-
-  show_success "\n$ORANCHELO $release for Ubuntu $version built!"
+  if [ "$?" == "0" ]; then
+    # Move generated deb
+    mv $build_path/*.deb $build_path/deb
+    show_success "\n$ORANCHELO $release for Ubuntu $version built!"
+  else
+    show_error "\n$ORANCHELO $release for Ubuntu $version failed!"
+    exit 0
+  fi
 }
 
 build_rpm() {

@@ -81,8 +81,8 @@ show_all() {
 
   for pkg in $deb; do
     name=$(echo $pkg | cut -d ':' -f2)
-    deb_name="$ORANCHELO_$release_version.ubuntu$name.1_all.deb"
-    deb_path="$DIR/build/deb/$release_version/$name/deb/$deb_name"
+    deb_name="$release_version.ubuntu$name.1_all.deb"
+    deb_path="$DIR/build/deb/$release_version/$name/deb/oranchelo-icon-theme_$release_version~ubuntu$name.1_all.deb"
 
     # Built package?
     if [ -f "$deb_path" ] ; then
