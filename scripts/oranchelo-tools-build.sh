@@ -75,6 +75,15 @@ build_deb() {
     build_path="$DIR/build/ppa/$release/$version"
   fi
 
+  # Check if package is built
+  if [ -f "$DIR/build/deb/$release/$version/deb/oranchelo-icon-theme_$release~ubuntu$version.1_all.deb" ]; then
+    show_info "\n[DEB] $ORANCHELO $release for Ubuntu $version built yet..."
+    return 0
+  elif [ -f "$DIR/build/ppa/$release/$version/oranchelo-icon-theme_$release~ubuntu$version.1_source.changes" ]; then
+    show_info "\n[PPA] $ORANCHELO $release for Ubuntu $version built yet..."
+    return 0
+  fi
+
   show_info "\nBuilding... $ORANCHELO $release for Ubuntu $version\n"
   mk_dir "$build_path"
   mk_dir "$build_path/bin"
@@ -131,33 +140,33 @@ build_deb() {
   rm debian/*.ex debian/*.EX debian/README.*
 
   # Build package
-  if [[ "$pkg" == *"deb"* ]]
+  if [[ "$pkg" == *"deb"* ]]; then
     debuild
   else
     if [ -z "$ORANCHELO_GPG_KEY" ] ; then
       show_error "\n\$ORANCHELO_GPG_KEY variable is empty!"
       exit 0
     else
-      debuild -k $ORANCHELO_GPG_KEY -S
+      debuild -k"${ORANCHELO_GPG_KEY}" -S
     fi
   fi
 
+  # Move generated deb
   if [ "$?" == "0" ]; then
-    # Move generated deb
-    cp $build_path/*.deb $build_path/deb
-    show_success "\n$ORANCHELO $release for Ubuntu $version built!"
+    cp $build_path/*.deb $build_path/deb >/dev/null 2>&1 || cp $build_path/*.changes $build_path/deb
+    show_success "\n[DEB] $ORANCHELO $release for Ubuntu $version built!"
   else
-    show_error "\n$ORANCHELO $release for Ubuntu $version failed!"
+    show_error "\n[DEB] $ORANCHELO $release for Ubuntu $version failed!"
     exit 0
   fi
 
   # Push PPA to Launchpad
-  if [[ "$pkg" == *"ppa"* ]]
+  if [[ "$pkg" == *"ppa"* ]]; then
     dput ppa:oranchelo/oranchelo-icon-theme oranchelo-icon-theme_$release~ubuntu$version.1_source.changes
     if [ "$?" == "0" ]; then
-      show_success "\n$ORANCHELO $release for Ubuntu $version uploaded to Launchpad!"
+      show_success "\n[PPA] $ORANCHELO $release for Ubuntu $version uploaded to Launchpad!"
     else
-      show_error "\n$ORANCHELO $release for Ubuntu $version upload failed!"
+      show_error "\n[PPA] $ORANCHELO $release for Ubuntu $version upload failed!"
       exit 0
     fi
   fi

@@ -1,4 +1,3 @@
-#! /bin/ppa
 #! /bin/bash
 
 # NAME          : oranchelo-tools-init

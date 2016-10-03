@@ -106,7 +106,7 @@ show_all() {
 
   for pkg in $deb; do
     version=$(echo $pkg | cut -d ':' -f2)
-    ppa_sources="$DIR/build/ppa/$release/$version/$release.ubuntu$version.1_source.changes"
+    ppa_sources="$DIR/build/ppa/$release/$version/oranchelo-icon-theme_$release~ubuntu$version.1_source.changes"
     launchpad="https://launchpad.net/~oranchelo/+archive/ubuntu/oranchelo-icon-theme/+files"
     ppa_url="$launchpad/oranchelo-icon-theme_$release~ubuntu$version.1.dsc"
 
