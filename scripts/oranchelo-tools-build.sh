@@ -63,6 +63,8 @@ build_packages() {
       exit
     fi
   done
+
+  show_success "\nAll packages built!"
 }
 
 build_deb() {
