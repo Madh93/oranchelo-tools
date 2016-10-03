@@ -15,6 +15,7 @@ source $( cd "$( dirname "$0" )" && pwd )/oranchelo-tools-utils.sh
 # CONFIG
 SCRIPT=$(basename $0 .sh)
 menu_deb=1
+menu_ppa=1
 menu_rpm=1
 
 
@@ -39,10 +40,12 @@ build() {
   # Check build type
   if [ $menu_deb -eq 0 ] ; then
     target=$(cat $DIR/config | grep -v "#" | grep deb | tr -s ' |\t' ':')
+  elif [ $menu_ppa -eq 0 ] ; then
+    target=$(cat $DIR/config | grep -v "#" | grep ppa | tr -s ' |\t' ':')
   elif [ $menu_rpm -eq 0 ] ; then
     target=$(cat $DIR/config | grep -v "#" | grep rpm | tr -s ' |\t' ':')
   else
-    target=$(cat $DIR/config | grep -v "#" | grep "deb\|rpm" | tr -s ' |\t' ':')
+    target=$(cat $DIR/config | grep -v "#" | grep "deb\|ppa\|rpm" | tr -s ' |\t' ':')
   fi
 
   build_packages
@@ -51,7 +54,7 @@ build() {
 build_packages() {
 
   for pkg in $target; do
-    if [[ "$pkg" == *"deb"* ]]; then
+    if [[ "$pkg" == *"deb"* ]] || [[ "$pkg" == *"ppa"* ]]; then
       build_deb
     elif [[ "$pkg" == *"rpm"* ]]; then
       build_rpm
@@ -66,7 +69,11 @@ build_deb() {
 
   version=$(echo $pkg | cut -d ':' -f2)
   codename=$(echo $pkg | cut -d ':' -f3)
-  build_path="$DIR/build/deb/$release/$version"
+  if [[ "$pkg" == *"deb"* ]]; then
+    build_path="$DIR/build/deb/$release/$version"
+  else
+    build_path="$DIR/build/ppa/$release/$version"
+  fi
 
   show_info "\nBuilding... $ORANCHELO $release for Ubuntu $version\n"
   mk_dir "$build_path"
@@ -124,15 +131,35 @@ build_deb() {
   rm debian/*.ex debian/*.EX debian/README.*
 
   # Build package
-  debuild
+  if [[ "$pkg" == *"deb"* ]]
+    debuild
+  else
+    if [ -z "$ORANCHELO_GPG_KEY" ] ; then
+      show_error "\n\$ORANCHELO_GPG_KEY variable is empty!"
+      exit 0
+    else
+      debuild -k $ORANCHELO_GPG_KEY -S
+    fi
+  fi
 
   if [ "$?" == "0" ]; then
     # Move generated deb
-    mv $build_path/*.deb $build_path/deb
+    cp $build_path/*.deb $build_path/deb
     show_success "\n$ORANCHELO $release for Ubuntu $version built!"
   else
     show_error "\n$ORANCHELO $release for Ubuntu $version failed!"
     exit 0
+  fi
+
+  # Push PPA to Launchpad
+  if [[ "$pkg" == *"ppa"* ]]
+    dput ppa:oranchelo/oranchelo-icon-theme oranchelo-icon-theme_$release~ubuntu$version.1_source.changes
+    if [ "$?" == "0" ]; then
+      show_success "\n$ORANCHELO $release for Ubuntu $version uploaded to Launchpad!"
+    else
+      show_error "\n$ORANCHELO $release for Ubuntu $version upload failed!"
+      exit 0
+    fi
   fi
 }
 
@@ -145,6 +172,7 @@ show_help() {
   echo -e "\n$SCRIPT: build ditribution package for $ORANCHELO.\n"
   echo -e "Usage: $SCRIPT [options]\n"
   echo -e "Options:"
+  echo "  -p, --ppa     Build pending PPA uploads"
   echo "  -d, --deb     Build pending DEB packages"
   echo "  -r, --rpm     Build pending RPM packages"
   echo "  -h, --help    Print help"
@@ -155,6 +183,10 @@ show_help() {
 # MAIN
 while [ "$1" != "" ]; do
   case "$1" in
+    -p | --ppa)
+      menu_ppa=0
+      ;;
+      ;;
     -d | --deb)
       menu_deb=0
       ;;
