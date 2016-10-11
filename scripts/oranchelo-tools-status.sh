@@ -43,9 +43,9 @@ show_status() {
 
   # Basic status
   if [ -f "$DIR/sources/$release.tar.gz" ] ; then
-    echo "Nothing to do: last release downloaded."
+    echo "Nothing to do. Last release downloaded: $(show_info $release)"
   else
-    echo -e "Available a new Oranchelo Icon Theme version:\t $(show_info $release)"
+    echo -e "Available a new Oranchelo Icon Theme version: $(show_info $release)"
   fi
 
   # All status builds
@@ -132,8 +132,9 @@ show_all() {
   rpm=$(echo "${builds}" | grep rpm | tr -s ' |\t' ':')
 
   for pkg in $rpm; do
-    rpm_name="$ORANCHELO-$release-1.fc23.noarch.rpm"
-    rpm_path="$DIR/build/rpm/$release/rpm/$rpm_name"
+    version=$(echo $pkg | cut -d ':' -f2)
+    rpm_name="oranchelo-icon-theme-$release-1.$version.noarch.rpm"
+    rpm_path="$DIR/build/rpm/$release/$version/rpm/$rpm_name"
 
     # Built package?
     if [ -f "$rpm_path" ] ; then
@@ -149,7 +150,7 @@ show_all() {
       pushed=$(show_error "no!")
     fi
 
-    printf "\t| %-7s | %-7s | %-5s   | %-6s    |\n" "RPM" "-" $built $pushed
+    printf "\t| %-7s | %-7s | %-5s   | %-6s    |\n" "RPM" $version $built $pushed
   done
 
   printf "\t+------------------------------------+ \n"

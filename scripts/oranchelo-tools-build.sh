@@ -175,7 +175,50 @@ build_deb() {
 }
 
 build_rpm() {
-  echo "this is a rpm man"
+
+  version=$(echo $pkg | cut -d ':' -f2)
+  build_path="$DIR/build/rpm/$release/$version"
+
+  # Check if package is built
+  if [ -f "$build_path/rpm/oranchelo-icon-theme-$release-1.$version.noarch.rpm" ]; then
+    show_info "\n[RPM] $ORANCHELO $release for Fedora $version built yet..."
+    return 0
+  fi
+
+  show_info "\nBuilding... $ORANCHELO $release for Fedora $version\n"
+  mk_dir "$build_path"
+  mk_dir "$build_path/BUILD"
+  mk_dir "$build_path/SOURCES"
+  mk_dir "$build_path/SRPMS"
+  mk_dir "$build_path/SPECS"
+  mk_dir "$build_path/SPECS/oranchelo-icon-theme.spec" "/usr/local/share/oranchelo-tools/rpm/config/oranchelo-icon-theme.spec"
+  mk_dir "$build_path/rpm"
+
+  show_info "\nCopying sources..."
+  cp $DIR/sources/$release.tar.gz $build_path/SOURCES/v$release.tar.gz
+
+  show_info "\nGenerating build configuration..."
+  # SPEC
+  sed -i "2s/.RELEASE/$release/" $build_path/SPECS/oranchelo-icon-theme.spec
+  sed -i "3s/.VERSION/$version/" $build_path/SPECS/oranchelo-icon-theme.spec
+
+  show_info "\nBuilding package..."
+  cd $build_path/SPECS
+
+  # Check errors
+  rpmlint oranchelo-icon-theme.spec
+
+  # Build rpm
+  rpmlint -ba oranchelo-icon-theme.spec
+
+  # Move generated rpm
+  if [ "$?" == "0" ]; then
+    cp $build_path/RPMS/noarch/oranchelo-icon-theme-$release-1.$version.noarch.rpm $build_path/rpm/oranchelo-icon-theme-$release-1.$version.noarch.rpm
+    show_success "\n[RPM] $ORANCHELO $release for Fedora $version built!"
+  else
+    show_error "\n[RPM] $ORANCHELO $release for Fedora $version failed!"
+    exit 0
+  fi
 }
 
 show_help() {
