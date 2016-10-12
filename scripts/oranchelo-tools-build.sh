@@ -194,8 +194,13 @@ build_rpm() {
   mk_dir "$build_path/SPECS/oranchelo-icon-theme.spec" "/usr/local/share/oranchelo-tools/rpm/config/oranchelo-icon-theme.spec"
   mk_dir "$build_path/rpm"
 
-  show_info "\nCopying sources..."
-  cp $DIR/sources/$release.tar.gz $build_path/SOURCES/v$release.tar.gz
+  show_info "\nExtracting and copying sources..."
+  tar -zxf $DIR/sources/$release.tar.gz -C $build_path/SOURCES
+  cp -rf $build_path/SOURCES/OrancheloTeam* $build_path/SOURCES/oranchelo-icon-theme-$release
+  cd $build_path/SOURCES
+  tar -zcf $build_path/SOURCES/v$release.tar.gz oranchelo-icon-theme-$release
+  rm -rf $build_path/SOURCES/OrancheloTeam*
+  rm -rf $build_path/SOURCES/oranchelo*
 
   show_info "\nGenerating build configuration..."
   # SPEC
@@ -203,16 +208,28 @@ build_rpm() {
   sed -i "3s/.VERSION/$version/" $build_path/SPECS/oranchelo-icon-theme.spec
 
   show_info "\nBuilding package..."
-  cd $build_path/SPECS
+  # Work in temporal ~/rpmbuild
+  if [[ -d "$HOME/rpmbuild" ]]; then
+    rm -rf ~/rpmbuild
+  fi
+  mkdir ~/rpmbuild
+  cp -r $build_path/SOURCES ~/rpmbuild
+  cp -r $build_path/SPECS ~/rpmbuild
+  mkdir ~/rpmbuild/BUILD ~/rpmbuild/SRPMS ~/rpmbuild/BUILDROOT
+  cd ~/rpmbuild/SPECS
 
   # Check errors
   rpmlint oranchelo-icon-theme.spec
 
   # Build rpm
-  rpmlint -ba oranchelo-icon-theme.spec
+  rpmbuild -ba oranchelo-icon-theme.spec
 
   # Move generated rpm
   if [ "$?" == "0" ]; then
+    cp -rf ~/rpmbuild/BUILD $build_path
+    cp -rf ~/rpmbuild/RPMS $build_path
+    cp -rf ~/rpmbuild/S* $build_path
+    rm -rf ~/rpmbuild
     cp $build_path/RPMS/noarch/oranchelo-icon-theme-$release-1.$version.noarch.rpm $build_path/rpm/oranchelo-icon-theme-$release-1.$version.noarch.rpm
     show_success "\n[RPM] $ORANCHELO $release for Fedora $version built!"
   else
