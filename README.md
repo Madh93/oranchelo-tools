@@ -5,7 +5,11 @@ Developments and build tools for [Oranchelo Icon Theme](https://github.com/Oranc
 
 ##### Ubuntu
 
-    sudo apt install git curl dh-make devscripts
+    sudo apt install git gcc curl dh-make devscripts
+
+##### Fedora
+
+    sudo dnf install git gcc curl fedora-packager fedora-review
 
 ### Installation
 

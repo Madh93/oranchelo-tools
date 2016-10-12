@@ -1,11 +1,16 @@
 BEGINBUILD
 ----------
+# For Ubuntu:
 # TYPE    VERSION   CODENAME
 # deb     14.04     trusty
 
 deb     12.04     precise
 deb     14.04     trusty
 deb     15.10     wily
-rpm
+
+# For Fedora:
+# TYPE    VERSION
+rpm     fc23
+rpm     fc24
 ---------
 ENDBUILD
