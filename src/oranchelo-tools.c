@@ -83,6 +83,8 @@ void setCommand(const char *name, command *cmd) {
         *cmd = STATUS;
     else if (strcmp(name, CMD_UPDATE) == 0)
         *cmd = UPDATE;
+    else if (strcmp(name, CMD_UPGRADE) == 0)
+        *cmd = UPGRADE;
     else
         throwErrorDetailed(INVALID_ARGUMENT, name);
 }
@@ -126,6 +128,7 @@ void showHelp() {
     printf("  init  \tInitialize build workspace\n");
     printf("  status\tCheck available release\n");
     printf("  update\tUpdate local releases\n");
+    printf("  upgrade\tUpgrade oranchelo-tools\n");
     printf("\nOptions:\n");
     printf("  -h, --help\tShow this help\n");
     printf("  -v, --version\tShow version\n");

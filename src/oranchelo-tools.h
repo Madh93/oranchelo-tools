@@ -1,3 +1,4 @@
+// NAME          : oranchelo-CMD_UPGRADEs.upgrade
 // NAME          : oranchelo-tools.h
 // DESCRIPTION   : Development and build tools for Oranchelo
 // AUTHOR        : Madh93 (Miguel Hernandez)
@@ -35,6 +36,7 @@
 #define CMD_INIT "init"
 #define CMD_STATUS "status"
 #define CMD_UPDATE "update"
+#define CMD_UPGRADE "upgrade"
 
 
 /**
@@ -48,7 +50,8 @@ typedef enum {
     CONFIG,
     INIT,
     STATUS,
-    UPDATE
+    UPDATE,
+    UPGRADE
 } command;
 
 /* error: Error Type */
