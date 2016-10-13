@@ -86,6 +86,16 @@ build_deb() {
     return 0
   fi
 
+  # Check DEB credentials
+  if [ -z "$DEBFULLNAME" ] ; then
+    show_error "\n\$DEBFULLNAME variable is empty!"
+    exit 0
+  fi
+  if [ -z "$DEBEMAIL" ] ; then
+    show_error "\n\$DEBEMAIL variable is empty!"
+    exit 0
+  fi
+
   show_info "\nBuilding... $ORANCHELO $release for Ubuntu $version\n"
   mk_dir "$build_path"
   mk_dir "$build_path/bin"
@@ -164,7 +174,8 @@ build_deb() {
 
   # Push PPA to Launchpad
   if [[ "$pkg" == *"ppa"* ]]; then
-    dput ppa:oranchelo/oranchelo-icon-theme oranchelo-icon-theme_$release~ubuntu$version.1_source.changes
+    cd $build_path
+    dput ppa:oranchelo/oranchelo-icon-theme oranchelo-icon-theme_0.7.4~ubuntu16.10.1_source.changes
     if [ "$?" == "0" ]; then
       show_success "\n[PPA] $ORANCHELO $release for Ubuntu $version uploaded to Launchpad!"
     else
