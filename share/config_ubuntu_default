@@ -1,0 +1,18 @@
+BEGINBUILD
+----------
+# TYPE    VERSION   CODENAME
+# deb     14.04     trusty
+# rpm     fc24
+
+# Add your builds here
+deb 14.04 trusty
+deb 16.04 xenial
+
+ppa 12.04 precise
+ppa 14.04 trusty
+ppa 15.10 wily
+ppa 16.04 xenial
+ppa 16.10 yakkety
+
+---------
+ENDBUILD
