@@ -43,7 +43,7 @@ clean_build() {
 show_help() {
 
   echo -e "\n$SCRIPT: initalize build directory for $ORANCHELO.\n"
-  echo -e "Usage: $SCRIPT [options]\n"
+  echo -e "Usage: oranchelo-tools clean [options]\n"
   echo -e "Options:"
   echo "  -a, --all     Remove all stored sources and config"
   echo "  -h, --help    Print help"
@@ -61,7 +61,7 @@ while [ "$1" != "" ]; do
       show_help
       ;;
     *)
-      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info '$SCRIPT -h') for usage."
+      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info oranchelo-tools clean -h) for usage."
       exit 0
       ;;
   esac

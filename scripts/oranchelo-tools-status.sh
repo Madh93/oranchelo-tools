@@ -163,7 +163,7 @@ update() {
 show_help() {
 
   echo -e "\n$SCRIPT: check available release of $ORANCHELO.\n"
-  echo -e "Usage: $SCRIPT [options]\n"
+  echo -e "Usage: oranchelo-tools status [options]\n"
   echo -e "Options:"
   echo "  -a, --all     [DEFAULT] Show status for all builds"
   echo "  -u, --update  Check and update local releases"
@@ -185,7 +185,7 @@ while [ "$1" != "" ]; do
       show_help
       ;;
     *)
-      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info '$SCRIPT -h') for usage."
+      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info oranchelo-tools status -h) for usage."
       exit 0
       ;;
   esac

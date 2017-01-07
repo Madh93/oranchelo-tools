@@ -252,7 +252,7 @@ build_rpm() {
 show_help() {
 
   echo -e "\n$SCRIPT: build ditribution package for $ORANCHELO.\n"
-  echo -e "Usage: $SCRIPT [options]\n"
+  echo -e "Usage: oranchelo-tools build [options]\n"
   echo -e "Options:"
   echo "  -p, --ppa     Build pending PPA uploads"
   echo "  -d, --deb     Build pending DEB packages"
@@ -278,7 +278,7 @@ while [ "$1" != "" ]; do
       show_help
       ;;
     *)
-      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info '$SCRIPT -h') for usage."
+      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info oranchelo-tools build -h) for usage."
       exit 0
       ;;
   esac

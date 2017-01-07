@@ -33,7 +33,7 @@ upgrade() {
 show_help() {
 
   echo -e "\n$SCRIPT: upgrade oranchelo-tools.\n"
-  echo -e "Usage: $SCRIPT [options]\n"
+  echo -e "Usage: oranchelo-tools upgrade [options]\n"
   echo -e "Options:"
   echo "  -h, --help    Print help"
   exit 0
@@ -47,7 +47,7 @@ while [ "$1" != "" ]; do
       show_help
       ;;
     *)
-      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info '$SCRIPT -h') for usage."
+      echo -e "$SCRIPT: unknown argument '$1'.\nRun $(show_info oranchelo-tools upgrade -h) for usage."
       exit 0
       ;;
   esac
