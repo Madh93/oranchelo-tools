@@ -175,7 +175,7 @@ build_deb() {
   # Push PPA to Launchpad
   if [[ "$pkg" == *"ppa"* ]]; then
     cd $build_path
-    dput ppa:oranchelo/oranchelo-icon-theme oranchelo-icon-theme_0.7.4~ubuntu16.10.1_source.changes
+    dput ppa:oranchelo/oranchelo-icon-theme oranchelo-icon-theme_$release~ubuntu$version.1_source.changes
     if [ "$?" == "0" ]; then
       show_success "\n[PPA] $ORANCHELO $release for Ubuntu $version uploaded to Launchpad!"
     else
