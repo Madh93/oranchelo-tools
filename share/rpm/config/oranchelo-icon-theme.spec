@@ -26,13 +26,18 @@ rm -rf $RPM_BUILD_ROOT
 install -m 755 -d $RPM_BUILD_ROOT/usr/share/icons/
 cp -r Oranchelo $RPM_BUILD_ROOT/usr/share/icons/
 cp -r Oranchelo-Green  $RPM_BUILD_ROOT/usr/share/icons/
+cp -r oranchelo-beka  $RPM_BUILD_ROOT/usr/share/icons/
+cp -r oranchelo-classic-folders  $RPM_BUILD_ROOT/usr/share/icons/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-/usr/share/icons/Oranchelo*
+/usr/share/icons/Oranchelo
+/usr/share/icons/Oranchelo-Green
+/usr/share/icons/oranchelo-beka
+/usr/share/icons/oranchelo-classic-folders
 %doc
 
 %changelog
