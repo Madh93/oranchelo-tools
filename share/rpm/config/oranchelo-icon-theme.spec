@@ -34,10 +34,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-/usr/share/icons/Oranchelo
-/usr/share/icons/Oranchelo-Green
-/usr/share/icons/oranchelo-beka
-/usr/share/icons/oranchelo-classic-folders
+/usr/share/icons/Oranchelo*
 %doc
 
 %changelog

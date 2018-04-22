@@ -110,8 +110,6 @@ build_deb() {
   show_info "\nExtracting and copying sources..."
   tar -zxf $DIR/sources/$release.tar.gz -C $build_path/bin
   cp -rf $build_path/bin/Oranchelo*/Oranchelo* $build_path/bin
-  cp -rf $build_path/bin/Oranchelo*/oranchelo-beka* $build_path/bin
-  cp -rf $build_path/bin/Oranchelo*/oranchelo-classic-folders* $build_path/bin
   rm -rf $build_path/bin/OrancheloTeam*
 
   show_info "\nGenerating build configuration..."
